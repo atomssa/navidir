@@ -17,7 +17,6 @@ class ViewWatcher(sublime_plugin.EventListener):
 
 	def on_query_context(self, view, key, operator, operand, match_all):
 		if key == "navi_dir_active":
-			print("on_query_context called with key = %s navi_dir_active= %s" % (key,str(navi_dir_active)))
 			return navi_dir_active
 
 	def on_activated_async(self, view):
@@ -67,15 +66,12 @@ class NaviDirCommand(sublime_plugin.WindowCommand):
 			return "%s%s" % (basename,cat)
 
 		def on_select(index):
-			print("on_select called with index =%d" % index)
 			if index != -1:
 				path = "%s/%s" % (self.curent_dir,self.content[index])
 				if (self.content[index] == "../"):
-					print("parent directory requested, opening")
 					self.curent_dir = os.path.abspath(os.path.join(self.curent_dir, os.pardir))
 					display_contents(on_select,on_highlight,True)
 				elif os.path.isdir(path):
-					print("on_select: %s is a directory" % self.content[index])
 					self.curent_dir = path
 					display_contents(on_select,on_highlight, True)
 				else:
@@ -83,22 +79,17 @@ class NaviDirCommand(sublime_plugin.WindowCommand):
 					unset_navi_dir_active()
 			else:
 				unset_navi_dir_active()
-				print("on_select(): setting navi_dir_active to %s", str(navi_dir_active))
 
 		def on_highlight(index):
-			print("on_highlight called with index =%d" % index)
 			if index != -1:
 				self.current_highlight = self.content[index]
 				path = "%s/%s" % (self.curent_dir,self.current_highlight)
 				if os.path.isdir(path):
-					print("on_highlight: %s is a directory" % self.content[index])
 				else:
-					print("on_highlight: %s is a file" % self.content[index])
 					self.window.open_file(path, sublime.TRANSIENT)
 
 		def display_contents(sel, high, timeout=False):
 			set_navi_dir_active()
-			print("display_contents(): setting navi_dir_active to %s", str(navi_dir_active))
 			self.content = [ format_content(x) for x in [".."] + os.listdir(self.curent_dir) if x != ".DS_Store" ]
 			if (timeout):
 				sublime.set_timeout(lambda:
@@ -114,7 +105,6 @@ class NaviDirCommand(sublime_plugin.WindowCommand):
 		def new_dir(dest):
 			return os.path.abspath(os.path.join(self.curent_dir, dest))
 
-		print("run() called with running=%s move_up=%s" % (str(running), str(move_up)))
 		if running:
 			if move_up:
 				update_display(new_dir(os.pardir))
@@ -128,7 +118,6 @@ class NaviDirCommand(sublime_plugin.WindowCommand):
 					self.window.run_command("hide_overlay")
 		else:
 			set_navi_dir_active()
-			print("run(): setting navi_dir_active to %s", str(navi_dir_active))
 			filename = self.window.active_view().file_name()
 			if os.path.exists(filename):
 				self.curent_dir = os.path.dirname(filename)
