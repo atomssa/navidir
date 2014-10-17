@@ -1,0 +1,5 @@
+[
+  {"keys": ["ctrl+x", "ctrl+f"], "command": "navi_dir"},
+  {"keys": ["tab"], "command": "navi_dir",  "args": {"running": true}, "context": [ {"key": "navi_dir_active"} ] },
+  {"keys": ["ctrl+l"], "command": "navi_dir",  "args": {"running": true, "move_up": true}, "context": [ {"key": "navi_dir_active"} ] }
+]
