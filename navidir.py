@@ -84,8 +84,7 @@ class NaviDirCommand(sublime_plugin.WindowCommand):
 			if index != -1:
 				self.current_highlight = self.content[index]
 				path = "%s/%s" % (self.curent_dir,self.current_highlight)
-				if os.path.isdir(path):
-				else:
+				if not os.path.isdir(path):
 					self.window.open_file(path, sublime.TRANSIENT)
 
 		def display_contents(sel, high, timeout=False):
