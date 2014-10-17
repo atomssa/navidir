@@ -118,7 +118,7 @@ class NaviDirCommand(sublime_plugin.WindowCommand):
 		else:
 			set_navi_dir_active()
 			filename = self.window.active_view().file_name()
-			if os.path.exists(filename):
+			if filename is not None and os.path.exists(filename):
 				self.curent_dir = os.path.dirname(filename)
 			else:
 				self.curent_dir = os.path.expanduser("~")
